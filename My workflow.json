@@ -1,0 +1,217 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "lourde",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "5753bffb-3c54-4e8e-b949-e795266247e6",
+      "name": "Webhook",
+      "webhookId": "4a7dc92b-fc0a-4442-8df4-44a5d08ac51e"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "99fddfe9-465d-407c-88cb-9b7a9a8d6bac",
+              "name": "usuario",
+              "value": "{{$json[\"body\"][\"usuario\"]}}",
+              "type": "string"
+            },
+            {
+              "id": "1919327c-3285-4ef5-a7ad-a5b3937998fe",
+              "name": "email",
+              "value": "{{$json[\"body\"][\"email\"]}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "e9e23cd2-9d7c-4c65-afe2-327182fc9545",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "1546a37b-b84b-4b40-a57b-064f7d704530",
+              "leftValue": "={{$json[\"email\"]}}",
+              "rightValue": "@",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        416,
+        0
+      ],
+      "id": "781257d7-ebd5-48bf-8d18-0944a0f6e475",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1xmxTRi93t3doJczMIWNPUFqWcjL24mkd_PKqUsoTyvA",
+          "mode": "list",
+          "cachedResultName": "guardadon8n",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1xmxTRi93t3doJczMIWNPUFqWcjL24mkd_PKqUsoTyvA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1xmxTRi93t3doJczMIWNPUFqWcjL24mkd_PKqUsoTyvA/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "usuario": "={{$json[\"email\"]}}"
+          },
+          "matchingColumns": [
+            "usuario"
+          ],
+          "schema": [
+            {
+              "id": "usuario",
+              "displayName": "usuario",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        624,
+        -96
+      ],
+      "id": "408fc1b2-84d1-43aa-8af1-f0271fb07e43",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "x8Ro4eLyf1CQQZaz",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "lourdesmairelop@gmail.com",
+        "subject": "ola",
+        "emailType": "text",
+        "message": "ola",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        624,
+        96
+      ],
+      "id": "cbe08d88-8f0e-4d84-a24e-7c123782cb3e",
+      "name": "Send a message",
+      "webhookId": "bb48aba4-5f51-4860-a4fc-34c9fb1f8392",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "xkUJX60rNXcTx4Rl",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "9f966cb1-4bb7-40da-9df4-a63e9f478bda",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d84fa4a9021f43004bc30305394e65cb918c16556eb029eb58b9c10708d2c471"
+  },
+  "id": "W9zI188y339MmNUg",
+  "tags": []
+}
