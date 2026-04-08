@@ -1,13 +1,49 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <title>Registro</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<h1>This is a heading</h1>
-<p>This is a paragraph.</p>
+<div class="login-container">
+    <h2>Crear cuenta</h2>
+
+<form action="https://lourdesmaire.app.n8n.cloud/webhook-test/lourde" method="POST">
+  <input type="text" name="usuario" required>
+  <input type="text" name="email" required>
+  <input type="password" name="password" required>
+  <button type="submit">Registrarse</button>
+</form>
+    <p id="mensaje"></p>
+</div>
+
+<script>
+document.getElementById("registroForm").addEventListener("submit", async function(e){
+    e.preventDefault();
+
+    const data = {
+        nombre: document.getElementById("nombre").value,
+        email: document.getElementById("email").value,
+        password: document.getElementById("password").value
+    };
+
+    try {
+        const res = await fetch("https://lourdesmaire.app.n8n.cloud/webhook-test/lourde", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        });
+
+        document.getElementById("mensaje").innerText = "Registro enviado correctamente";
+    } catch (error) {
+        document.getElementById("mensaje").innerText = "Error al enviar";
+    }
+});
+</script>
 
 </body>
-</html> 
+</html>
